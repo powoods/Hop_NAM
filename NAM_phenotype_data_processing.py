@@ -176,7 +176,7 @@ est_nam_H2("W2021006_NAM_pheno_replaced_nodot.csv", rep=True, get_emmeans=False)
 est_nam_H2("W2021006_NAM_pheno_replaced_nodot.csv", rep=False, get_emmeans=True)          
 est_nam_H2("W2021006_NAM_pheno_replaced_nodot.csv", rep=True, get_emmeans=True)      
             
-### add a 4th parameter for binary_output = False ###
+### add a 4th parameter for get_binary_means = False ###
 ### Version 2 ###  
     
     def est_nam_H2_means(pheno, rep=False, get_emmeans = False, get_binary_means = False):
