@@ -340,21 +340,23 @@ est_nam_H2("W2021006_NAM_pheno_replaced_nodot.csv", rep=True, get_emmeans=True)
         if get_emmeans == False:
             return print('The broad sense heritability is: ' + str(round(heritability, 2)) + '%')
         
-        else: #this is where I need to insert the new if statement (if get_binary_means == False)
+        else:
             if get_binary_means == False:
                 if rep == False:
                     mod_m_no_rep = stats.lm('mean_counts ~ Plant_ID', data = means_for_heritability)
                     em_out_no_rep = emmeans.emmeans(mod_m_no_rep, 'Plant_ID')
                     em_df_no_rep = base.as_data_frame(em_out_no_rep)
                     em_df_no_rep_pd = pandas2ri.rpy2py_dataframe(em_df_no_rep)
-                
+                	em_df_no_rep_pd.loc[em_df_no_rep_pd['emmean'] < 0, 'emmean'] = 0
+                	
                     return em_df_no_rep_pd
                 else:
                     mod_m_rep = lme4.lmer('mean_counts ~ Plant_ID + (1|Bench)', data = means_for_heritability)
                     em_out_rep = emmeans.emmeans(mod_m_rep, 'Plant_ID')
                     em_df_rep = base.as_data_frame(em_out_rep)
                     em_df_rep_pd = pandas2ri.rpy2py_dataframe(em_df_rep)
-                
+                	em_df_rep_pd.loc[em_df_rep_pd['emmean'] < 0, 'emmean'] = 0
+                	
                     return em_df_rep_pd
             else:
                 if rep == False:
