@@ -7,7 +7,7 @@ Created on Mon Mar 25 11:50:46 2024
 """
 #v6#
 
-def est_nam_H2_means_v6(pheno, rep=False, get_emmeans = False, get_binary_means = False, qn_transform = False):
+def est_nam_H2_means(pheno, rep=False, get_emmeans = False, get_binary_means = False, qn_transform = False):
     """
     Uses an Input Phenotype Data File To Estimate the Broad Sense Heritability for Colony Counts or Estimated Marginal Means.
 
