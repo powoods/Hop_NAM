@@ -37,7 +37,6 @@ def est_nam_H2_means(pheno, rep=False, get_emmeans = False, get_binary_means = F
 
     """
     import pandas as pd  # package for tabular dataframes
-    # package for constructing mixed models (for heritability)
     import pymer4 as pymer
     import numpy as np  # package for working with complex data arrays
     import matplotlib.pyplot as plt  # package for plotting
