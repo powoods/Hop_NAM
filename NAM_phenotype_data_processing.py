@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Mon Mar 25 11:00:22 2024
+Created on Mon Mar 25 11:50:46 2024
 
 @author: patrick.woods
 """
-#v5#
+#v6#
 
-def est_nam_H2_means(pheno, rep=False, get_emmeans = False, get_binary_means = False, qn_transform = False):
+def est_nam_H2_means_v6(pheno, rep=False, get_emmeans = False, get_binary_means = False, qn_transform = False):
     """
     Uses an Input Phenotype Data File To Estimate the Broad Sense Heritability for Colony Counts or Estimated Marginal Means.
 
@@ -192,6 +192,7 @@ def est_nam_H2_means(pheno, rep=False, get_emmeans = False, get_binary_means = F
                 em_df_no_rep[0] = base.as_character(em_df_no_rep[0])
                 em_df_no_rep_pd = pandas2ri.rpy2py_dataframe(em_df_no_rep)
                 em_df_no_rep_pd.loc[em_df_no_rep_pd['emmean'] < 0, 'emmean'] = 0
+                em_df_no_rep_pd['emmean'] = round(em_df_no_rep_pd['emmean'], 2) #rounding the emmeans to two decimal places
                 if qn_transform == False:
                 
                     return em_df_no_rep_pd
@@ -212,6 +213,7 @@ def est_nam_H2_means(pheno, rep=False, get_emmeans = False, get_binary_means = F
                 em_df_rep[0] = base.as_character(em_df_rep[0])
                 em_df_rep_pd = pandas2ri.rpy2py_dataframe(em_df_rep)
                 em_df_rep_pd.loc[em_df_rep_pd['emmean'] < 0, 'emmean'] = 0
+                em_df_rep_pd['emmean'] = round(em_df_rep_pd['emmean'],2) #rounding the emmeans to two decimal places
                 if qn_transform == False:
                 
                     return em_df_rep_pd
@@ -232,6 +234,7 @@ def est_nam_H2_means(pheno, rep=False, get_emmeans = False, get_binary_means = F
                 em_df_no_rep = base.as_data_frame(em_out_no_rep)
                 em_df_no_rep[0] = base.as_character(em_df_no_rep[0])
                 em_df_no_rep_pd_bin = pandas2ri.rpy2py_dataframe(em_df_no_rep)
+                em_df_no_rep_pd_bin['emmean'] = round(em_df_no_rep_pd_bin['emmean'], 2)
                 
                 em_df_no_rep_pd_bin.loc[em_df_no_rep_pd_bin['emmean'] >= 1, 'emmean'] = 1 
                 em_df_no_rep_pd_bin.loc[em_df_no_rep_pd_bin['emmean'] < 1, 'emmean'] = 0 
@@ -243,6 +246,7 @@ def est_nam_H2_means(pheno, rep=False, get_emmeans = False, get_binary_means = F
                 em_df_rep = base.as_data_frame(em_out_rep)
                 em_df_rep[0] = base.as_character(em_df_rep[0])
                 em_df_rep_pd_bin = pandas2ri.rpy2py_dataframe(em_df_rep)
+                em_df_rep_pd_bin['emmean'] = round(em_df_rep_pd_bin['emmean'],2)
                 
                 em_df_rep_pd_bin.loc[em_df_rep_pd_bin['emmean'] >= 1, 'emmean'] = 1
                 em_df_rep_pd_bin.loc[em_df_rep_pd_bin['emmean'] < 1, 'emmean'] = 0
