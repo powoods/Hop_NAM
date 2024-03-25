@@ -1,23 +1,24 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Mon Mar 18 13:13:38 2024
+Created on Mon Mar 25 11:00:22 2024
 
 @author: patrick.woods
 """
-#v4#
+#v5#
 
-def est_nam_H2_means(pheno, rep=False, get_emmeans = False, get_binary_means = False):
+def est_nam_H2_means(pheno, rep=False, get_emmeans = False, get_binary_means = False, qn_transform = False):
     """
-    Uses an Input Phenotype Data File To Estimate the Broad Sense Heritability from raw Colony Counts or Estimated Marginal Means.
+    Uses an Input Phenotype Data File To Estimate the Broad Sense Heritability for Colony Counts or Estimated Marginal Means.
 
 
     Parameters
     ----------
     pheno : .csv file containing Bine 1 and Bine 2 colony counts
     rep : boolean. Default is False. Assigning to True will include Rep in the model when calculating heritability.
-    get_emmeans: boolean. Default is False. Assigning to True will cause function to return a pandas dataframe with EMMEANS.
-    get_binary_means: Default is False. Assigning to True will cause funcion to return a pandas dataframe with EMMEANS converted to the binary 'resistant' or 'susceptible' phenotype scale.
+    get_emmeans : boolean. Default is False. Assigning to True will cause function to return a pandas dataframe with EMMEANS.
+    get_binary_means : boolean. Default is False. Assigning to True will cause funcion to return a pandas dataframe with EMMEANS converted to the binary 'resistant' or 'susceptible' phenotype scale.
+    qn_transform : boolean. Default is False. Assigning to True will cause function to set mean colony counts less than 1 to missing and quantile normalize all mean colony counts greater than or equal to 1.
     Returns
     -------
     Broad sense heritability as a percentage of total phenotypic variance.
@@ -25,6 +26,10 @@ def est_nam_H2_means(pheno, rep=False, get_emmeans = False, get_binary_means = F
     OR
     
     Estimated Marginal Means (Emmeans).
+    
+    OR
+    
+    Quantile Estimated Marginal Means (Emmeans_qn).
     
     OR
     
@@ -48,6 +53,12 @@ def est_nam_H2_means(pheno, rep=False, get_emmeans = False, get_binary_means = F
     elif rep == True and get_emmeans == False:
         print('Calculating heritability with rep included in the model...')
         
+    elif rep == False and get_emmeans == True and qn_transform == True:
+        print('Calculating quantile normalized emmeans without rep included in the model...')
+        
+    elif rep == True and get_emmeans == True and qn_transform == True:
+        print('Calculating quantile normalized emmeans with rep included in the model...')
+    
     elif rep == True and get_emmeans == True and get_binary_means == True:
          print('Calculating Binary Emmeans with rep included in the model...')   
         
@@ -137,13 +148,15 @@ def est_nam_H2_means(pheno, rep=False, get_emmeans = False, get_binary_means = F
     means_for_heritability = pd.concat([bencha_overall_mean, benchb_overall_mean])
     means_for_heritability[['Plant_ID', 'Bench']] = means_for_heritability[['Plant_ID', 'Bench']].astype('category')
     means_for_heritability = means_for_heritability.reset_index()
-    
     ### Build Model Based on User Defined Condition ###
     emmeans = rpackages.importr('emmeans')
     lme4 = rpackages.importr('lme4')
     nlme = rpackages.importr('nlme')
     base = rpackages.importr('base')
     stats = rpackages.importr('stats')
+    bn = rpackages.importr('bestNormalize')
+    set_column = getattr(base, '$<-')
+
 
     if rep == False:
         mod_r = lme4.lmer('mean_counts ~ (1|Plant_ID)',data=means_for_heritability)
@@ -179,8 +192,19 @@ def est_nam_H2_means(pheno, rep=False, get_emmeans = False, get_binary_means = F
                 em_df_no_rep[0] = base.as_character(em_df_no_rep[0])
                 em_df_no_rep_pd = pandas2ri.rpy2py_dataframe(em_df_no_rep)
                 em_df_no_rep_pd.loc[em_df_no_rep_pd['emmean'] < 0, 'emmean'] = 0
+                if qn_transform == False:
                 
-                return em_df_no_rep_pd
+                    return em_df_no_rep_pd
+                else:
+                    em_df_no_rep_pd.loc[em_df_no_rep_pd['emmean'] < 1, 'emmean'] = np.NaN
+                    em_df_no_rep_r = robjects.conversion.py2rpy(em_df_no_rep_pd)
+                    qn = bn.orderNorm(em_df_no_rep_r[1])
+                    transformed_df_no_rep = base.as_data_frame(qn[0])
+                    transformed_df_no_rep = set_column(transformed_df_no_rep, 'Plant_ID', em_df_no_rep_r[0])
+                    transformed_df_no_rep_pd = pandas2ri.rpy2py_dataframe(transformed_df_no_rep)
+                    transformed_df_no_rep_pd.rename(columns={transformed_df_no_rep_pd.columns[0]: 'mean_counts_qn'}, inplace=True)
+                    
+                    return transformed_df_no_rep_pd
             else:
                 mod_m_rep = lme4.lmer('mean_counts ~ Plant_ID + (1|Bench)', data = means_for_heritability)
                 em_out_rep = emmeans.emmeans(mod_m_rep, 'Plant_ID')
@@ -188,8 +212,19 @@ def est_nam_H2_means(pheno, rep=False, get_emmeans = False, get_binary_means = F
                 em_df_rep[0] = base.as_character(em_df_rep[0])
                 em_df_rep_pd = pandas2ri.rpy2py_dataframe(em_df_rep)
                 em_df_rep_pd.loc[em_df_rep_pd['emmean'] < 0, 'emmean'] = 0
+                if qn_transform == False:
                 
-                return em_df_rep_pd
+                    return em_df_rep_pd
+                else:
+                    em_df_rep_pd.loc[em_df_rep_pd['emmean'] < 1, 'emmean'] = np.NaN
+                    em_df_rep_r = robjects.conversion.py2rpy(em_df_rep_pd)
+                    qn = bn.orderNorm(em_df_rep_r[1])
+                    transformed_df_rep = base.as_data_frame(qn[0])
+                    transformed_df_rep = set_column(transformed_df_rep, 'Plant_ID', em_df_rep_r[0])
+                    transformed_df_rep_pd = pandas2ri.rpy2py_dataframe(transformed_df_rep)
+                    transformed_df_rep_pd.rename(columns={transformed_df_rep_pd.columns[0]: 'mean_counts_qn'}, inplace=True)
+                
+                    return transformed_df_rep_pd
         else:
             if rep == False:
                 mod_m_no_rep = stats.lm('mean_counts ~ Plant_ID', data = means_for_heritability)
