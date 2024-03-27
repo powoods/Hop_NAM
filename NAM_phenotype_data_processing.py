@@ -29,7 +29,7 @@ def est_nam_H2_means(pheno, rep=False, get_emmeans = False, get_binary_means = F
     
     OR
     
-    Quantile Estimated Marginal Means (Emmeans_qn).
+    Quantile Normalized Estimated Marginal Means.
     
     OR
     
