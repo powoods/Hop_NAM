@@ -7,10 +7,6 @@ Two script files are present, one written in R (version 4.2.0) and the other wri
 
 Both scripts achieve the same results by estimating broad sense heritability, calculating estimated marginal means and converting these means to binary (0, 1 format).
 
-The R script focuses more on a line by line approach while the python script uses a single function to perform all required tasks.
+Both scripts also contain the code used for quantilnormalization of the phenotype data.
 
-The python script contains two versions of the main function: 1) the initial version (est_nam_H2()) which only estimates heritability and marginal means, and 2) the most recent version 
-(est_nam_H2_means()) which estimates 
-heritability, marginal means, and can convert marginal means to binary (0, 1) format.
-
-Currently only the R script possesses the code for quantile normalization of susceptibility phenotypes. This functionality will be available in the python script in the next releases.
+The R script uses a line by line approach while the python script uses a single function to perform all required tasks.
