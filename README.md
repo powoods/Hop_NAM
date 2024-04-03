@@ -10,3 +10,5 @@ Both scripts achieve the same results by estimating broad sense heritability, ca
 Both scripts also contain the code used for quantilnormalization of the phenotype data.
 
 The R script uses a line by line approach while the python script uses a single function to perform all required tasks.
+
+The R script also has additional code to calculate statistics across all NAM families and within family phenotype segregation tests.
