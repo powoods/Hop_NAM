@@ -24,3 +24,9 @@ r4=${f/_L003-L004_R1_001.fastq.gz}_r2_trim.fastq.gz
 r5=${f/_L003-L004_R1_001.fastq.gz}_report.html
 echo  "fastp --thread 8 -p -l 36 -g --cut_front --cut_tail -y --detect-adapter-for-pe -h $r5 -i $f -I $r2 -o $r3 -O $r4"
 done
+
+# Use fastqc as a secondary check to make sure parent fastq.gz files look good for alignment #
+for f in *.fastqc.gz
+do
+fastqc -t7 $f
+done
