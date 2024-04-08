@@ -31,7 +31,6 @@ do
 fastqc -t7 $f
 done
 
-
 # Align quality + adapter trimmed paired end reads to the indexed and masked reference Cascade genome using BWA MEM and pipe output to samtools view to convert to a .bam file #
 for f in *_R1_trim.fastq.gz
 r1=$f
@@ -78,5 +77,9 @@ r2=${f/_md_pos_fx_nsort.bam}prop.bam
 samtools view -q 10 -f 0x002 -b $r1 > $r2
 done
 
-
+# Index all final filtered alignment .bam files using samtools index #
+for f in *prop.bam
+do
+samtools index $f
+done
 
