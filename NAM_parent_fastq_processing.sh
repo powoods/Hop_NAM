@@ -39,3 +39,11 @@ r2=4{f/_R1_trim.fastq.gz}_R2_trim.fastq.gz
 r3=${f/_R1_trim.fastq.gz}.bam
 bwa mem -t 10 dovetailCascadeFullAssemblyMasked.fasta $r1 $r2 | samtools view -@10  -bS - > $r3
 done
+
+# Sort each read within the .bam files by name (required for marking PCR duplicates) using samtools #
+for f in *.bam
+r1=$f
+r2=${f/.bam}_nsort.bam
+do
+samtools sort -@ 11 -n $r1 -o $r2
+done
