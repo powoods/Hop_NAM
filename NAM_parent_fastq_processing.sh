@@ -141,7 +141,9 @@ screen
 bcftools mpileup -R Cascade_chrX.txt -a FORMAT/DP -a FORMAT/SP -a FORMAT/AD -a INFO/AD -Ou -A -f dovetailCascadeFullAssemblyMasked.fasta -b NAM_parents.txt | bcftools call -R Cascade_chrX.txt -vmO z -f GQ,GP -o 
 NAM_parents_chrX.vcf.gz
 
-
+# Concatenate all raw VCF files to create one final raw VCF for Chromosomes 1-10 using bcftools concat #
+bcftools concat -Ovz NAM_parents_chr1.vcf.gz NAM_parents_chr2.vcf.gz NAM_parents_chr3.vcf.gz NAM_parents_chr4.vcf.gz NAM_parents_chr5.vcf.gz NAM_parents_chr6.vcf.gz NAM_parents_chr7.vcf.gz NAM_parents_chr8.vcf.gz 
+NAM_parents_chr9.vcf.gz NAM_parents_chrX.vcf.gz -o NAM_parents_chr1_X.vcf.gz
 
 
 
