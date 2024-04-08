@@ -30,3 +30,12 @@ for f in *.fastqc.gz
 do
 fastqc -t7 $f
 done
+
+
+# Align quality + adapter trimmed paired end reads to the indexed and masked reference Cascade genome using BWA MEM and pipe output to samtools view to convert to a .bam file#
+for f in *_R1_trim.fastq.gz
+r1=$f
+r2=4{f/_R1_trim.fastq.gz}_R2_trim.fastq.gz
+r3=${f/_R1_trim.fastq.gz}.bam
+bwa mem -t 10 dovetailCascadeFullAssemblyMasked.fasta $r1 $r2 | samtools view -@10  -bS - > $r3
+done
