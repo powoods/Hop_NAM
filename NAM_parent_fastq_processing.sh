@@ -63,8 +63,12 @@ r2=${f/_fx_nsort.bam}_pos_fx_nsort.bam
 samtools sort -@ 11 $r1 -o $r2
 done
 
-
-
+# Mark and remove PCR duplicates using samtools markdup #
+for f in *_pos_fx_nsort.bam
+r1=$f
+r2=${f/_pos_fx_nsort.bam}_md_pos_fx_nsort.bam
+samtools markdup -@ 11 $r1 $r2
+done
 
 
 
