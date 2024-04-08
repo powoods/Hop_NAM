@@ -13,6 +13,5 @@ The R script uses a line by line approach while the python script uses a single 
 
 The R script also has additional code to calculate statistics across all NAM families and within family phenotype segregation tests.
 
-The shell script titled "NAM_parent_fastq_processing.sh" contains all code used to inspect and quality/adapter trim all raw fastq files for the NAM parents.
-
-The shell script titled "reference_genome_and_alignment_file_processing.sh" contains all code used to index the reference genome, align quality trimmed fastq files to the reference genome and process the subsequent alignment files.
+The shell script titled "NAM_parent_fastq_processing.sh" contains all code used to process raw paired end fastq.gz files for NAM parents from start to finish (read trimmed to 
+variant calling).
