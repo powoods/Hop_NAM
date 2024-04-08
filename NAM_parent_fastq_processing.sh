@@ -55,6 +55,20 @@ r2=${f/_nsort.bam}_fx_nsort.bam
 samtools fixmate -@ 11 -m $r1 $r2
 done
 
+# Sort alignments in .bam files by physical position using samtools sort #
+for f in *_fx_nsort.bam
+do
+r1=$f
+r2=${f/_fx_nsort.bam}_pos_fx_nsort.bam
+samtools sort -@ 11 $r1 -o $r2
+done
+
+
+
+
+
+
+
 
 
 
