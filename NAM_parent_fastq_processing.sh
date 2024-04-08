@@ -70,9 +70,13 @@ r2=${f/_pos_fx_nsort.bam}_md_pos_fx_nsort.bam
 samtools markdup -@ 11 $r1 $r2
 done
 
-
-
-
+# Apply a final filter to .bam alignment to remove alignements with a mapping quality less than 10 and keep only properly paired alignments using samtools view #
+for f in *_md_pos_fx_nsort.bam
+do
+r1=$f
+r2=${f/_md_pos_fx_nsort.bam}prop.bam
+samtools view -q 10 -f 0x002 -b $r1 > $r2
+done
 
 
 
