@@ -83,3 +83,68 @@ do
 samtools index $f
 done
 
+# Now call variants separately for each Hop chromosome (1-10) across all filtered .bam files using bcftools mpileup and pipe the output to bcftools call #
+# Start a separate screen session for each Hop chromosome to call variants on them individually. #
+# Each Cascade_chrN.txt file contains 3 columns that specify the Chromosome ID, Chromosome Start Position, and Chromosome End Position #
+
+ls *prop.bam > NAM_parents.txt #create a simple text file with a single column containing the name of all final filtered .bam files for each parent.
+
+
+screen
+
+bcftools mpileup -R Cascade_chr1.txt -a FORMAT/DP -a FORMAT/SP -a FORMAT/AD -a INFO/AD -Ou -A -f dovetailCascadeFullAssemblyMasked.fasta -b NAM_parents.txt | bcftools call -R 
+Cascade_chr1.txt  -vmO z -f GQ,GP -o 
+NAM_parents_chr1.vcf.gz
+
+screen
+
+bcftools mpileup -R Cascade_chr2.txt -a FORMAT/DP -a FORMAT/SP -a FORMAT/AD -a INFO/AD -Ou -A -f dovetailCascadeFullAssemblyMasked.fasta -b NAM_parents.txt | bcftools call -R Cascade_chr2.txt -vmO z -f GQ,GP -o 
+NAM_parents_chr2.vcf.gz
+
+screen
+
+bcftools mpileup -R Cascade_chr3.txt -a FORMAT/DP -a FORMAT/SP -a FORMAT/AD -a INFO/AD -Ou -A -f dovetailCascadeFullAssemblyMasked.fasta -b NAM_parents.txt | bcftools call -R Cascade_chr3.txt -vmO z -f GQ,GP -o 
+NAM_parents_chr3.vcf.gz
+
+screen
+
+bcftools mpileup -R Cascade_chr4.txt -a FORMAT/DP -a FORMAT/SP -a FORMAT/AD -a INFO/AD -Ou -A -f dovetailCascadeFullAssemblyMasked.fasta -b NAM_parents.txt | bcftools call -R Cascade_chr4.txt -vmO z -f GQ,GP -o 
+NAM_parents_chr4.vcf.gz
+
+screen
+
+bcftools mpileup -R Cascade_chr5.txt -a FORMAT/DP -a FORMAT/SP -a FORMAT/AD -a INFO/AD -Ou -A -f dovetailCascadeFullAssemblyMasked.fasta -b NAM_parents.txt | bcftools call -R Cascade_chr5.txt -vmO z -f GQ,GP -o 
+NAM_parents_chr5.vcf.gz
+
+screen
+
+bcftools mpileup -R Cascade_chr6.txt -a FORMAT/DP -a FORMAT/SP -a FORMAT/AD -a INFO/AD -Ou -A -f dovetailCascadeFullAssemblyMasked.fasta -b NAM_parents.txt | bcftools call -R Cascade_chr6.txt -vmO z -f GQ,GP -o 
+NAM_parents_chr6.vcf.gz
+
+screen
+
+bcftools mpileup -R Cascade_chr7.txt -a FORMAT/DP -a FORMAT/SP -a FORMAT/AD -a INFO/AD -Ou -A -f dovetailCascadeFullAssemblyMasked.fasta -b NAM_parents.txt | bcftools call -R Cascade_chr7.txt -vmO z -f GQ,GP -o 
+NAM_parents_chr7.vcf.gz
+
+screen
+
+bcftools mpileup -R Cascade_chr8.txt -a FORMAT/DP -a FORMAT/SP -a FORMAT/AD -a INFO/AD -Ou -A -f dovetailCascadeFullAssemblyMasked.fasta -b NAM_parents.txt | bcftools call -R Cascade_chr8.txt -vmO z -f GQ,GP -o 
+NAM_parents_chr8.vcf.gz
+
+screen
+
+bcftools mpileup -R Cascade_chr9.txt -a FORMAT/DP -a FORMAT/SP -a FORMAT/AD -a INFO/AD -Ou -A -f dovetailCascadeFullAssemblyMasked.fasta -b NAM_parents.txt | bcftools call -R Cascade_chr9.txt -vmO z -f GQ,GP -o 
+NAM_parents_chr9.vcf.gz
+
+screen
+
+bcftools mpileup -R Cascade_chrX.txt -a FORMAT/DP -a FORMAT/SP -a FORMAT/AD -a INFO/AD -Ou -A -f dovetailCascadeFullAssemblyMasked.fasta -b NAM_parents.txt | bcftools call -R Cascade_chrX.txt -vmO z -f GQ,GP -o 
+NAM_parents_chrX.vcf.gz
+
+
+
+
+
+
+
+
