@@ -33,6 +33,7 @@ done
 
 # Align quality + adapter trimmed paired end reads to the indexed and masked reference Cascade genome using BWA MEM and pipe output to samtools view to convert to a .bam file #
 for f in *_R1_trim.fastq.gz
+do
 r1=$f
 r2=4{f/_R1_trim.fastq.gz}_R2_trim.fastq.gz
 r3=${f/_R1_trim.fastq.gz}.bam
@@ -41,14 +42,15 @@ done
 
 # Sort each read within the .bam files by name (required for marking PCR duplicates) using samtools sort #
 for f in *.bam
+do
 r1=$f
 r2=${f/.bam}_nsort.bam
-do
 samtools sort -@ 11 -n $r1 -o $r2
 done
 
 # Fill in various coordinates and flags from name-sorted .bam files with samtools fixmate #
 for f in *_nsort.bam
+do
 r1=$f
 r2=${f/_nsort.bam}_fx_nsort.bam
 samtools fixmate -@ 11 -m $r1 $r2
@@ -64,6 +66,7 @@ done
 
 # Mark and remove PCR duplicates using samtools markdup #
 for f in *_pos_fx_nsort.bam
+do
 r1=$f
 r2=${f/_pos_fx_nsort.bam}_md_pos_fx_nsort.bam
 samtools markdup -@ 11 $r1 $r2
