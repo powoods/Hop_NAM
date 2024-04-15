@@ -1,0 +1,23 @@
+### Order of file names for VCF filtering ###
+
+# 1 the raw vcf straight from bcftools call: Number of raw loci = 40720097 #
+NAM_parents_all.vcf.gz
+
+# 2 the minimum quality of 30.0, bi-allelic SNPs and no missing data filtered VCF. Number of loci remaining = 22922814 #
+NAM_parents_all_q30_nomiss_biSNPs.recode.vcf.gz
+
+# 3 the minimum coverage of 8 and 90% confidence interval depth filtered VCF. No loci removed, only set genotypes to missing in this step. #
+NAM_parents_q30_biSNPs_mndp8_90CIdp.vcf.gz
+
+# 4 the allelic balance filtered for heterozygote VCF. No loci removed, only set genotypes to missing in this step. #
+NAM_parents_q30_biSNPs_mndp8_90CIdp_33_66hetdp.vcf.gz
+
+# 5 Filtering for no missing data to reduce file size. Number of loci remaining = 861,675 #
+NAM_parents_q30_biSNPs_mndp8_90CIdp_33_66hetdp_nomiss.recode.vcf.gz
+
+# 6 Extract sites with only the 10 assembled chromosomes extracted. Number of loci remaining = 633,797 #
+NAM_parents_q30_biSNPs_mndp8_90CIdp_33_66hetdp_nomiss_ch1_10.recode.vcf.gz
+
+# 7 One final filter to keep sites with a max read depth of 40 and minor allele count of 1. Final number of loci remaining = 554,739 #
+NAM_parents_q30_biSNPs_mndp8_90CIdp_33_66hetdp_mxdp40_mac1_chr1_10.recode.vcf
+
